@@ -1,11 +1,1537 @@
+```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>RK Tool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mark Tool — Creative Technologist</title>
+    <meta name="description" content="Persoonlijke CV en portfolio van Mark Tool — Creative Technologist, developer en maker.">
+
+    <style>
+        /* =========================================================
+           RESET
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
+            background: #08090c;
+            color: #f2f3f5;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        ::selection {
+            background: #ffffff;
+            color: #08090c;
+        }
+
+
+        /* =========================================================
+           BACKGROUND
+        ========================================================= */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -2;
+
+            background:
+                linear-gradient(
+                    rgba(255,255,255,0.025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.025) 1px,
+                    transparent 1px
+                );
+
+            background-size: 50px 50px;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+
+            background: radial-gradient(
+                circle,
+                rgba(110, 120, 255, 0.12),
+                transparent 70%
+            );
+
+            pointer-events: none;
+            z-index: -1;
+
+            top: -250px;
+            right: -200px;
+        }
+
+
+        /* =========================================================
+           CURSOR GLOW
+        ========================================================= */
+
+        #cursorGlow {
+            position: fixed;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+
+            background: radial-gradient(
+                circle,
+                rgba(255,255,255,0.035),
+                transparent 70%
+            );
+
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+
+            transition: opacity 0.3s ease;
+        }
+
+
+        /* =========================================================
+           NAVIGATION
+        ========================================================= */
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+
+            z-index: 100;
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            background: rgba(8,9,12,0.72);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: auto;
+
+            height: 72px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 30px;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            opacity: 0.4;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+
+            font-size: 14px;
+            color: #9da1aa;
+        }
+
+        .nav-links a {
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+
+        /* =========================================================
+           GENERAL
+        ========================================================= */
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 30px;
+        }
+
+        section {
+            padding: 130px 0;
+        }
+
+        .section-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #777c87;
+            margin-bottom: 18px;
+        }
+
+        .section-title {
+            font-size: clamp(35px, 5vw, 60px);
+            line-height: 1;
+            letter-spacing: -3px;
+            margin-bottom: 55px;
+        }
+
+        .muted {
+            color: #9297a2;
+        }
+
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        #home {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+
+            padding-top: 100px;
+        }
+
+        .hero {
+            max-width: 900px;
+        }
+
+        .availability {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.025);
+
+            border-radius: 100px;
+            padding: 8px 14px;
+
+            font-size: 13px;
+            color: #aeb3bd;
+
+            margin-bottom: 30px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #7cff9b;
+            box-shadow: 0 0 12px rgba(124,255,155,0.7);
+        }
+
+        .hero h1 {
+            font-size: clamp(65px, 12vw, 150px);
+            line-height: 0.86;
+            letter-spacing: -8px;
+            margin-left: -8px;
+
+            margin-bottom: 45px;
+        }
+
+        .hero h1 .outline {
+            color: transparent;
+            -webkit-text-stroke: 1px #555963;
+        }
+
+        .hero-description {
+            max-width: 650px;
+
+            font-size: clamp(18px, 2vw, 23px);
+            line-height: 1.5;
+
+            color: #a5a9b3;
+        }
+
+        .hero-description strong {
+            color: white;
+            font-weight: 500;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+
+            padding: 13px 20px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            border: 1px solid rgba(255,255,255,0.12);
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.07);
+        }
+
+        .button.primary {
+            background: white;
+            color: #08090c;
+            border-color: white;
+        }
+
+        .button.primary:hover {
+            background: #ddd;
+        }
+
+
+        /* =========================================================
+           ABOUT
+        ========================================================= */
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .about-text {
+            font-size: 19px;
+            color: #a4a8b1;
+            line-height: 1.8;
+        }
+
+        .about-text p + p {
+            margin-top: 22px;
+        }
+
+        .facts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .fact {
+            padding: 25px;
+            background: #0b0d11;
+        }
+
+        .fact-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #666b75;
+            margin-bottom: 8px;
+        }
+
+        .fact-value {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+
+        /* =========================================================
+           EXPERIENCE
+        ========================================================= */
+
+        .timeline {
+            position: relative;
+        }
+
+        .timeline::before {
+            content: "";
+
+            position: absolute;
+            left: 7px;
+            top: 5px;
+            bottom: 5px;
+
+            width: 1px;
+
+            background: rgba(255,255,255,0.1);
+        }
+
+        .timeline-item {
+            position: relative;
+
+            padding-left: 50px;
+            padding-bottom: 65px;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 0;
+            top: 5px;
+
+            width: 15px;
+            height: 15px;
+
+            border-radius: 50%;
+
+            background: #08090c;
+            border: 2px solid #777;
+        }
+
+        .timeline-date {
+            font-size: 12px;
+            color: #707580;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .timeline-title {
+            font-size: 25px;
+            margin-bottom: 5px;
+        }
+
+        .timeline-company {
+            color: #aaaeb8;
+            margin-bottom: 15px;
+        }
+
+        .timeline-description {
+            max-width: 700px;
+            color: #858a95;
+        }
+
+
+        /* =========================================================
+           SKILLS
+        ========================================================= */
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .skill {
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 25px;
+            background: rgba(255,255,255,0.015);
+
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+        .skill:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .skill-name {
+            font-weight: 600;
+        }
+
+        .skill-level {
+            font-size: 12px;
+            color: #737883;
+        }
+
+        .skill-bar {
+            height: 3px;
+            background: #22252c;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: #e8e9eb;
+        }
+
+
+        /* =========================================================
+           PROJECTS
+        ========================================================= */
+
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .project {
+            min-height: 300px;
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            padding: 30px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.035),
+                    rgba(255,255,255,0.005)
+                );
+
+            transition:
+                transform 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+        .project:hover {
+            transform: translateY(-7px);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .project-number {
+            color: #555a65;
+            font-size: 13px;
+        }
+
+        .project h3 {
+            font-size: 28px;
+            margin: 25px 0 10px;
+        }
+
+        .project p {
+            color: #858a94;
+            max-width: 450px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 25px;
+        }
+
+        .tag {
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 5px 9px;
+            border-radius: 5px;
+
+            font-size: 11px;
+            color: #898e98;
+        }
+
+
+        /* =========================================================
+           EDUCATION
+        ========================================================= */
+
+        .education-card {
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 40px;
+
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 50px;
+
+            background: rgba(255,255,255,0.015);
+        }
+
+        .education-year {
+            color: #666b75;
+            font-size: 14px;
+        }
+
+        .education-card h3 {
+            font-size: 27px;
+            margin-bottom: 5px;
+        }
+
+        .education-card h4 {
+            font-weight: 400;
+            color: #858a94;
+            margin-bottom: 20px;
+        }
+
+        .education-card p {
+            color: #858a94;
+        }
+
+
+        /* =========================================================
+           INTERESTS
+        ========================================================= */
+
+        .interests {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .interest {
+            padding: 12px 18px;
+
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 100px;
+
+            color: #999da6;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .interest:hover {
+            background: white;
+            color: #08090c;
+        }
+
+
+        /* =========================================================
+           CONTACT
+        ========================================================= */
+
+        #contact {
+            min-height: 70vh;
+
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-box {
+            width: 100%;
+
+            border: 1px solid rgba(255,255,255,0.1);
+
+            padding: 70px;
+
+            text-align: center;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(255,255,255,0.04),
+                    transparent 60%
+                );
+        }
+
+        .contact-box h2 {
+            font-size: clamp(45px, 7vw, 90px);
+            line-height: 0.95;
+            letter-spacing: -5px;
+            margin-bottom: 25px;
+        }
+
+        .contact-box p {
+            max-width: 500px;
+            margin: auto;
+            color: #858a94;
+            font-size: 17px;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+
+            margin-top: 35px;
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.07);
+
+            padding: 30px 0;
+
+            color: #60656f;
+            font-size: 13px;
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+
+        /* =========================================================
+           SCROLL ANIMATIONS
+        ========================================================= */
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+
+            transition:
+                opacity 0.7s ease,
+                transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 750px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-inner {
+                padding: 0 20px;
+            }
+
+            .container {
+                padding: 0 20px;
+            }
+
+            section {
+                padding: 90px 0;
+            }
+
+            .hero h1 {
+                font-size: 70px;
+                letter-spacing: -5px;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .projects {
+                grid-template-columns: 1fr;
+            }
+
+            .education-card {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 30px;
+            }
+
+            .contact-box {
+                padding: 45px 25px;
+            }
+
+            .contact-box h2 {
+                letter-spacing: -3px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
+
+
 <body>
-    <h1>Hallo!</h1>
-    <p>Mijn website draait op GitHub Pages.</p>
+
+    <div id="cursorGlow"></div>
+
+
+    <!-- =========================================================
+         NAVIGATION
+    ========================================================== -->
+
+    <nav>
+        <div class="nav-inner">
+
+            <a href="#home" class="logo">
+                mark<span>.tool</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="#about">Over mij</a></li>
+                <li><a href="#experience">Ervaring</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projecten</a></li>
+                <li><a href="#education">Opleiding</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+
+        </div>
+    </nav>
+
+
+    <main>
+
+        <!-- =====================================================
+             HERO
+        ====================================================== -->
+
+        <section id="home">
+
+            <div class="container">
+
+                <div class="hero">
+
+                    <div class="availability">
+                        <span class="status-dot"></span>
+                        Open voor interessante projecten
+                    </div>
+
+                    <h1>
+                        Mark<br>
+                        <span class="outline">Tool.</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        <strong>Creative Technologist</strong> met een passie
+                        voor technologie, design en dingen daadwerkelijk maken.
+                        Ik beweeg graag op het snijvlak van
+                        <strong>software, hardware en mensen.</strong>
+                    </p>
+
+                    <div class="hero-buttons">
+
+                        <a href="#projects" class="button primary">
+                            Bekijk mijn werk →
+                        </a>
+
+                        <a href="#contact" class="button">
+                            Neem contact op
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             ABOUT
+        ====================================================== -->
+
+        <section id="about">
+
+            <div class="container">
+
+                <div class="section-label">01 — Over mij</div>
+
+                <h2 class="section-title reveal">
+                    Nieuwsgierig.<br>
+                    Technisch. <span class="muted">Praktisch.</span>
+                </h2>
+
+                <div class="about-grid">
+
+                    <div class="about-text reveal">
+
+                        <p>
+                            Ik ben Mark Tool, een Creative Technology student
+                            en maker uit Nederland.
+                        </p>
+
+                        <p>
+                            Mijn interesse ligt vooral bij projecten waarbij
+                            technologie niet het doel is, maar een middel om
+                            iets interessants, nuttigs of gewoon ontzettend
+                            gaaf te maken.
+                        </p>
+
+                        <p>
+                            Van webapplicaties en interactieve systemen tot
+                            fysieke prototypes en 3D-printing: ik vind het
+                            vooral leuk om een idee om te zetten in iets dat
+                            daadwerkelijk werkt.
+                        </p>
+
+                    </div>
+
+
+                    <div class="facts reveal">
+
+                        <div class="fact">
+                            <div class="fact-label">Locatie</div>
+                            <div class="fact-value">Nederland</div>
+                        </div>
+
+                        <div class="fact">
+                            <div class="fact-label">Studie</div>
+                            <div class="fact-value">Creative Technology</div>
+                        </div>
+
+                        <div class="fact">
+                            <div class="fact-label">Focus</div>
+                            <div class="fact-value">Technology × Design</div>
+                        </div>
+
+                        <div class="fact">
+                            <div class="fact-label">Rol</div>
+                            <div class="fact-value">Maker / Developer</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             EXPERIENCE
+        ====================================================== -->
+
+        <section id="experience">
+
+            <div class="container">
+
+                <div class="section-label">02 — Ervaring</div>
+
+                <h2 class="section-title reveal">
+                    Wat ik heb<br>
+                    <span class="muted">gedaan.</span>
+                </h2>
+
+
+                <div class="timeline">
+
+                    <div class="timeline-item reveal">
+
+                        <div class="timeline-dot"></div>
+
+                        <div class="timeline-date">
+                            2025 — heden
+                        </div>
+
+                        <h3 class="timeline-title">
+                            Creative Technology
+                        </h3>
+
+                        <div class="timeline-company">
+                            University of Twente
+                        </div>
+
+                        <p class="timeline-description">
+                            Werken aan interactieve technologie, software,
+                            hardware, UX en onderzoek. Met een sterke focus
+                            op het combineren van technische haalbaarheid
+                            met menselijke interactie.
+                        </p>
+
+                    </div>
+
+
+                    <div class="timeline-item reveal">
+
+                        <div class="timeline-dot"></div>
+
+                        <div class="timeline-date">
+                            2023 — 2024
+                        </div>
+
+                        <h3 class="timeline-title">
+                            Officier Externe Betrekkingen
+                        </h3>
+
+                        <div class="timeline-company">
+                            Studievereniging Proto
+                        </div>
+
+                        <p class="timeline-description">
+                            Bestuurlijke ervaring binnen een studievereniging,
+                            waarbij ik verantwoordelijk was voor externe
+                            relaties, samenwerkingen en communicatie met
+                            partners.
+                        </p>
+
+                    </div>
+
+
+                    <div class="timeline-item reveal">
+
+                        <div class="timeline-dot"></div>
+
+                        <div class="timeline-date">
+                            Doorlopend
+                        </div>
+
+                        <h3 class="timeline-title">
+                            Independent Maker
+                        </h3>
+
+                        <div class="timeline-company">
+                            Persoonlijke projecten
+                        </div>
+
+                        <p class="timeline-description">
+                            Een verzameling van eigen projecten op het gebied
+                            van webdevelopment, Raspberry Pi, automatisering,
+                            3D-printing, games en andere technische experimenten.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             SKILLS
+        ====================================================== -->
+
+        <section id="skills">
+
+            <div class="container">
+
+                <div class="section-label">03 — Skills</div>
+
+                <h2 class="section-title reveal">
+                    Mijn<br>
+                    <span class="muted">gereedschapskist.</span>
+                </h2>
+
+
+                <div class="skills-grid">
+
+                    <div class="skill reveal">
+
+                        <div class="skill-header">
+                            <span class="skill-name">HTML / CSS</span>
+                            <span class="skill-level">Expert</span>
+                        </div>
+
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 95%"></div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill reveal">
+
+                        <div class="skill-header">
+                            <span class="skill-name">JavaScript</span>
+                            <span class="skill-level">Advanced</span>
+                        </div>
+
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 88%"></div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill reveal">
+
+                        <div class="skill-header">
+                            <span class="skill-name">Python</span>
+                            <span class="skill-level">Advanced</span>
+                        </div>
+
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 85%"></div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill reveal">
+
+                        <div class="skill-header">
+                            <span class="skill-name">PHP / MySQL</span>
+                            <span class="skill-level">Advanced</span>
+                        </div>
+
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 82%"></div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill reveal">
+
+                        <div class="skill-header">
+                            <span class="skill-name">Node.js</span>
+                            <span class="skill-level">Advanced</span>
+                        </div>
+
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 80%"></div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill reveal">
+
+                        <div class="skill-header">
+                            <span class="skill-name">3D Printing / CAD</span>
+                            <span class="skill-level">Advanced</span>
+                        </div>
+
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 78%"></div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             PROJECTS
+        ====================================================== -->
+
+        <section id="projects">
+
+            <div class="container">
+
+                <div class="section-label">04 — Projecten</div>
+
+                <h2 class="section-title reveal">
+                    Dingen die ik<br>
+                    <span class="muted">heb gebouwd.</span>
+                </h2>
+
+
+                <div class="projects">
+
+                    <article class="project reveal">
+
+                        <div>
+
+                            <div class="project-number">
+                                PROJECT / 001
+                            </div>
+
+                            <h3>
+                                Change Management Game
+                            </h3>
+
+                            <p>
+                                Een tabletop game-based workshop waarmee
+                                managers op een interactieve manier leren
+                                omgaan met change management.
+                            </p>
+
+                        </div>
+
+                        <div class="tags">
+                            <span class="tag">Game Design</span>
+                            <span class="tag">UX</span>
+                            <span class="tag">Research</span>
+                            <span class="tag">Education</span>
+                        </div>
+
+                    </article>
+
+
+                    <article class="project reveal">
+
+                        <div>
+
+                            <div class="project-number">
+                                PROJECT / 002
+                            </div>
+
+                            <h3>
+                                Raspberry Pi Server
+                            </h3>
+
+                            <p>
+                                Een persoonlijke home server voor websites,
+                                services en automatisering, inclusief Docker,
+                                reverse proxy en HTTPS.
+                            </p>
+
+                        </div>
+
+                        <div class="tags">
+                            <span class="tag">Raspberry Pi</span>
+                            <span class="tag">Docker</span>
+                            <span class="tag">Linux</span>
+                            <span class="tag">Networking</span>
+                        </div>
+
+                    </article>
+
+
+                    <article class="project reveal">
+
+                        <div>
+
+                            <div class="project-number">
+                                PROJECT / 003
+                            </div>
+
+                            <h3>
+                                Web Applications
+                            </h3>
+
+                            <p>
+                                Verschillende webapplicaties met databases,
+                                gebruikersinteractie en dynamische data.
+                            </p>
+
+                        </div>
+
+                        <div class="tags">
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">PHP</span>
+                            <span class="tag">MySQL</span>
+                            <span class="tag">Node.js</span>
+                        </div>
+
+                    </article>
+
+
+                    <article class="project reveal">
+
+                        <div>
+
+                            <div class="project-number">
+                                PROJECT / 004
+                            </div>
+
+                            <h3>
+                                Maker Projects
+                            </h3>
+
+                            <p>
+                                Een verzameling fysieke prototypes,
+                                3D-geprinte onderdelen, Raspberry Pi projecten
+                                en andere technische experimenten.
+                            </p>
+
+                        </div>
+
+                        <div class="tags">
+                            <span class="tag">3D Printing</span>
+                            <span class="tag">Hardware</span>
+                            <span class="tag">Prototyping</span>
+                            <span class="tag">IoT</span>
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             EDUCATION
+        ====================================================== -->
+
+        <section id="education">
+
+            <div class="container">
+
+                <div class="section-label">05 — Opleiding</div>
+
+                <h2 class="section-title reveal">
+                    Waar ik<br>
+                    <span class="muted">vandaan kom.</span>
+                </h2>
+
+
+                <div class="education-card reveal">
+
+                    <div class="education-year">
+                        2019 — heden
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Creative Technology
+                        </h3>
+
+                        <h4>
+                            University of Twente
+                        </h4>
+
+                        <p>
+                            Een multidisciplinaire opleiding waarin technologie,
+                            design, programmeren, interactie en onderzoek
+                            samenkomen.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             INTERESTS
+        ====================================================== -->
+
+        <section>
+
+            <div class="container">
+
+                <div class="section-label">06 — Buiten werk</div>
+
+                <h2 class="section-title reveal">
+                    Dingen waar<br>
+                    ik <span class="muted">energie van krijg.</span>
+                </h2>
+
+
+                <div class="interests reveal">
+
+                    <span class="interest">💻 Development</span>
+                    <span class="interest">🛠️ Making</span>
+                    <span class="interest">🖨️ 3D Printing</span>
+                    <span class="interest">🤖 Home Automation</span>
+                    <span class="interest">🎮 Gaming</span>
+                    <span class="interest">🎧 DJing</span>
+                    <span class="interest">🎨 Design</span>
+                    <span class="interest">🧠 Psychology</span>
+                    <span class="interest">🚀 New Technology</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CONTACT
+        ====================================================== -->
+
+        <section id="contact">
+
+            <div class="container">
+
+                <div class="contact-box reveal">
+
+                    <div class="section-label">
+                        07 — Contact
+                    </div>
+
+                    <h2>
+                        Let's build<br>
+                        something.
+                    </h2>
+
+                    <p>
+                        Heb je een interessant project, een goed idee,
+                        of wil je gewoon even kennismaken?
+                        Stuur me gerust een bericht.
+                    </p>
+
+
+                    <div class="contact-links">
+
+                        <!-- PAS DEZE AAN -->
+
+                        <a
+                            href="mailto:hello@marktool.nl"
+                            class="button primary"
+                        >
+                            ✉️ hello@marktool.nl
+                        </a>
+
+                        <a
+                            href="https://www.linkedin.com/"
+                            target="_blank"
+                            class="button"
+                        >
+                            LinkedIn ↗
+                        </a>
+
+                        <a
+                            href="https://github.com/"
+                            target="_blank"
+                            class="button"
+                        >
+                            GitHub ↗
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
+
+    <footer>
+
+        <div class="container">
+
+            <div class="footer-inner">
+
+                <div>
+                    © 2026 Mark Tool
+                </div>
+
+                <div>
+                    Built with HTML, CSS & JavaScript.
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+
+    <script>
+
+        /* -------------------------------------------------------
+           Cursor glow
+        ------------------------------------------------------- */
+
+        const cursorGlow = document.getElementById("cursorGlow");
+
+        document.addEventListener("mousemove", (event) => {
+
+            cursorGlow.style.left = event.clientX + "px";
+            cursorGlow.style.top = event.clientY + "px";
+
+        });
+
+
+        /* -------------------------------------------------------
+           Scroll reveal
+        ------------------------------------------------------- */
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+
+                entries.forEach((entry) => {
+
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.12
+            }
+        );
+
+
+        document.querySelectorAll(".reveal").forEach((element) => {
+            observer.observe(element);
+        });
+
+
+        /* -------------------------------------------------------
+           Active navigation
+        ------------------------------------------------------- */
+
+        const sections = document.querySelectorAll("section[id]");
+        const navLinks = document.querySelectorAll(".nav-links a");
+
+        window.addEventListener("scroll", () => {
+
+            let current = "";
+
+            sections.forEach((section) => {
+
+                const sectionTop = section.offsetTop - 150;
+
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute("id");
+                }
+
+            });
+
+            navLinks.forEach((link) => {
+
+                link.style.color = "";
+
+                if (link.getAttribute("href") === "#" + current) {
+                    link.style.color = "white";
+                }
+
+            });
+
+        });
+
+    </script>
+
 </body>
 </html>
+```
