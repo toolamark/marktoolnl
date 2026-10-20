@@ -1,1556 +1,289 @@
-```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Mark Tool — RPA programmeur</title>
-    <meta name="description" content="CV en portfolio van Mark Tool — RPA expert.">
-
-    <style>
-        /* =========================================================
-           RESET
-        ========================================================= */
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
-                         Roboto, Helvetica, Arial, sans-serif;
-            background: #08090c;
-            color: #f2f3f5;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        ::selection {
-            background: #ffffff;
-            color: #08090c;
-        }
-
-
-        /* =========================================================
-           BACKGROUND
-        ========================================================= */
-
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: -2;
-
-            background:
-                linear-gradient(
-                    rgba(255,255,255,0.025) 1px,
-                    transparent 1px
-                ),
-                linear-gradient(
-                    90deg,
-                    rgba(255,255,255,0.025) 1px,
-                    transparent 1px
-                );
-
-            background-size: 50px 50px;
-        }
-
-        body::after {
-            content: "";
-            position: fixed;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-
-            background: radial-gradient(
-                circle,
-                rgba(110, 120, 255, 0.12),
-                transparent 70%
-            );
-
-            pointer-events: none;
-            z-index: -1;
-
-            top: -250px;
-            right: -200px;
-        }
-
-
-        /* =========================================================
-           CURSOR GLOW
-        ========================================================= */
-
-        #cursorGlow {
-            position: fixed;
-            width: 350px;
-            height: 350px;
-            border-radius: 50%;
-
-            background: radial-gradient(
-                circle,
-                rgba(255,255,255,0.035),
-                transparent 70%
-            );
-
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 0;
-
-            transition: opacity 0.3s ease;
-        }
-
-
-        /* =========================================================
-           NAVIGATION
-        ========================================================= */
-
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-
-            z-index: 100;
-
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-
-            background: rgba(8,9,12,0.72);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-
-        .nav-inner {
-            max-width: 1200px;
-            margin: auto;
-
-            height: 72px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            padding: 0 30px;
-        }
-
-        .logo {
-            font-weight: 800;
-            font-size: 20px;
-            letter-spacing: -1px;
-        }
-
-        .logo span {
-            opacity: 0.4;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-
-            font-size: 14px;
-            color: #9da1aa;
-        }
-
-        .nav-links a {
-            transition: color 0.2s ease;
-        }
-
-        .nav-links a:hover {
-            color: white;
-        }
-
-
-        /* =========================================================
-           GENERAL
-        ========================================================= */
-
-        .container {
-            max-width: 1100px;
-            margin: auto;
-            padding: 0 30px;
-        }
-
-        section {
-            padding: 130px 0;
-        }
-
-        .section-label {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #777c87;
-            margin-bottom: 18px;
-        }
-
-        .section-title {
-            font-size: clamp(35px, 5vw, 60px);
-            line-height: 1;
-            letter-spacing: -3px;
-            margin-bottom: 55px;
-        }
-
-        .muted {
-            color: #9297a2;
-        }
-
-
-        /* =========================================================
-           HERO
-        ========================================================= */
-
-        #home {
-            min-height: 100vh;
-
-            display: flex;
-            align-items: center;
-
-            padding-top: 100px;
-        }
-
-        .hero {
-            max-width: 900px;
-        }
-
-        .availability {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.025);
-
-            border-radius: 100px;
-            padding: 8px 14px;
-
-            font-size: 13px;
-            color: #aeb3bd;
-
-            margin-bottom: 30px;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #7cff9b;
-            box-shadow: 0 0 12px rgba(124,255,155,0.7);
-        }
-
-        .hero h1 {
-            font-size: clamp(65px, 12vw, 150px);
-            line-height: 0.86;
-            letter-spacing: -8px;
-            margin-left: -8px;
-
-            margin-bottom: 45px;
-        }
-
-        .hero h1 .outline {
-            color: transparent;
-            -webkit-text-stroke: 1px #555963;
-        }
-
-        .hero-description {
-            max-width: 650px;
-
-            font-size: clamp(18px, 2vw, 23px);
-            line-height: 1.5;
-
-            color: #a5a9b3;
-        }
-
-        .hero-description strong {
-            color: white;
-            font-weight: 500;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
-
-        .button {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-
-            padding: 13px 20px;
-
-            border-radius: 8px;
-
-            font-size: 14px;
-            font-weight: 600;
-
-            border: 1px solid rgba(255,255,255,0.12);
-
-            transition:
-                transform 0.2s ease,
-                background 0.2s ease;
-        }
-
-        .button:hover {
-            transform: translateY(-3px);
-            background: rgba(255,255,255,0.07);
-        }
-
-        .button.primary {
-            background: white;
-            color: #08090c;
-            border-color: white;
-        }
-
-        .button.primary:hover {
-            background: #ddd;
-        }
-
-
-        /* =========================================================
-           ABOUT
-        ========================================================= */
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 80px;
-            align-items: start;
-        }
-
-        .about-text {
-            font-size: 19px;
-            color: #a4a8b1;
-            line-height: 1.8;
-        }
-
-        .about-text p + p {
-            margin-top: 22px;
-        }
-
-        .facts {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1px;
-
-            border: 1px solid rgba(255,255,255,0.08);
-            background: rgba(255,255,255,0.08);
-        }
-
-        .fact {
-            padding: 25px;
-            background: #0b0d11;
-        }
-
-        .fact-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #666b75;
-            margin-bottom: 8px;
-        }
-
-        .fact-value {
-            font-size: 17px;
-            font-weight: 600;
-        }
-
-
-        /* =========================================================
-           EXPERIENCE
-        ========================================================= */
-
-        .timeline {
-            position: relative;
-        }
-
-        .timeline::before {
-            content: "";
-
-            position: absolute;
-            left: 7px;
-            top: 5px;
-            bottom: 5px;
-
-            width: 1px;
-
-            background: rgba(255,255,255,0.1);
-        }
-
-        .timeline-item {
-            position: relative;
-
-            padding-left: 50px;
-            padding-bottom: 65px;
-        }
-
-        .timeline-item:last-child {
-            padding-bottom: 0;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: 0;
-            top: 5px;
-
-            width: 15px;
-            height: 15px;
-
-            border-radius: 50%;
-
-            background: #08090c;
-            border: 2px solid #777;
-        }
-
-        .timeline-date {
-            font-size: 12px;
-            color: #707580;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-        }
-
-        .timeline-title {
-            font-size: 25px;
-            margin-bottom: 5px;
-        }
-
-        .timeline-company {
-            color: #aaaeb8;
-            margin-bottom: 15px;
-        }
-
-        .timeline-description {
-            max-width: 700px;
-            color: #858a95;
-        }
-
-
-        /* =========================================================
-           SKILLS
-        ========================================================= */
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-        }
-
-        .skill {
-            border: 1px solid rgba(255,255,255,0.08);
-            padding: 25px;
-            background: rgba(255,255,255,0.015);
-
-            transition:
-                transform 0.25s ease,
-                border-color 0.25s ease;
-        }
-
-        .skill:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255,255,255,0.2);
-        }
-
-        .skill-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .skill-name {
-            font-weight: 600;
-        }
-
-        .skill-level {
-            font-size: 12px;
-            color: #737883;
-        }
-
-        .skill-bar {
-            height: 3px;
-            background: #22252c;
-            overflow: hidden;
-        }
-
-        .skill-progress {
-            height: 100%;
-            background: #e8e9eb;
-        }
-
-
-        /* =========================================================
-           PROJECTS
-        ========================================================= */
-
-        .projects {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-
-        .project {
-            min-height: 300px;
-
-            border: 1px solid rgba(255,255,255,0.08);
-
-            padding: 30px;
-
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255,255,255,0.035),
-                    rgba(255,255,255,0.005)
-                );
-
-            transition:
-                transform 0.3s ease,
-                border-color 0.3s ease;
-        }
-
-        .project:hover {
-            transform: translateY(-7px);
-            border-color: rgba(255,255,255,0.2);
-        }
-
-        .project-number {
-            color: #555a65;
-            font-size: 13px;
-        }
-
-        .project h3 {
-            font-size: 28px;
-            margin: 25px 0 10px;
-        }
-
-        .project p {
-            color: #858a94;
-            max-width: 450px;
-        }
-
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 25px;
-        }
-
-        .tag {
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 5px 9px;
-            border-radius: 5px;
-
-            font-size: 11px;
-            color: #898e98;
-        }
-
-
-        /* =========================================================
-           EDUCATION
-        ========================================================= */
-
-        .education-card {
-            border: 1px solid rgba(255,255,255,0.08);
-            padding: 40px;
-
-            display: grid;
-            grid-template-columns: 180px 1fr;
-            gap: 50px;
-
-            background: rgba(255,255,255,0.015);
-        }
-
-        .education-year {
-            color: #666b75;
-            font-size: 14px;
-        }
-
-        .education-card h3 {
-            font-size: 27px;
-            margin-bottom: 5px;
-        }
-
-        .education-card h4 {
-            font-weight: 400;
-            color: #858a94;
-            margin-bottom: 20px;
-        }
-
-        .education-card p {
-            color: #858a94;
-        }
-
-
-        /* =========================================================
-           INTERESTS
-        ========================================================= */
-
-        .interests {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .interest {
-            padding: 12px 18px;
-
-            border: 1px solid rgba(255,255,255,0.09);
-            border-radius: 100px;
-
-            color: #999da6;
-
-            transition:
-                background 0.2s ease,
-                color 0.2s ease;
-        }
-
-        .interest:hover {
-            background: white;
-            color: #08090c;
-        }
-
-
-        /* =========================================================
-           CONTACT
-        ========================================================= */
-
-        #contact {
-            min-height: 70vh;
-
-            display: flex;
-            align-items: center;
-        }
-
-        .contact-box {
-            width: 100%;
-
-            border: 1px solid rgba(255,255,255,0.1);
-
-            padding: 70px;
-
-            text-align: center;
-
-            background:
-                radial-gradient(
-                    circle at center,
-                    rgba(255,255,255,0.04),
-                    transparent 60%
-                );
-        }
-
-        .contact-box h2 {
-            font-size: clamp(45px, 7vw, 90px);
-            line-height: 0.95;
-            letter-spacing: -5px;
-            margin-bottom: 25px;
-        }
-
-        .contact-box p {
-            max-width: 500px;
-            margin: auto;
-            color: #858a94;
-            font-size: 17px;
-        }
-
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-
-            margin-top: 35px;
-        }
-
-
-        /* =========================================================
-           FOOTER
-        ========================================================= */
-
-        footer {
-            border-top: 1px solid rgba(255,255,255,0.07);
-
-            padding: 30px 0;
-
-            color: #60656f;
-            font-size: 13px;
-        }
-
-        .footer-inner {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-
-        /* =========================================================
-           SCROLL ANIMATIONS
-        ========================================================= */
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(25px);
-
-            transition:
-                opacity 0.7s ease,
-                transform 0.7s ease;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-
-        /* =========================================================
-           MOBILE
-        ========================================================= */
-
-        @media (max-width: 750px) {
-
-            .nav-links {
-                display: none;
-            }
-
-            .nav-inner {
-                padding: 0 20px;
-            }
-
-            .container {
-                padding: 0 20px;
-            }
-
-            section {
-                padding: 90px 0;
-            }
-
-            .hero h1 {
-                font-size: 70px;
-                letter-spacing: -5px;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .projects {
-                grid-template-columns: 1fr;
-            }
-
-            .education-card {
-                grid-template-columns: 1fr;
-                gap: 15px;
-                padding: 30px;
-            }
-
-            .contact-box {
-                padding: 45px 25px;
-            }
-
-            .contact-box h2 {
-                letter-spacing: -3px;
-            }
-
-            .footer-inner {
-                flex-direction: column;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gefeliciteerd, Papa!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1E2340;
+    --gold: #E3B95A;
+    --text: #F3EEE3;
+    --muted: #A9AEC6;
+    --line: rgba(243, 238, 227, 0.28);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Nunito", system-ui, sans-serif;
+    font-size: 1.15rem;
+    line-height: 1.6;
+  }
+  main { max-width: 1100px; margin: 0 auto; padding: 16px 16px 64px; }
+
+  /* Grote foto bovenaan */
+  .foto {
+    position: relative;
+    margin: 0;
+    aspect-ratio: 16 / 9;
+    border: 2px solid var(--gold);
+    border-radius: 20px;
+    overflow: hidden;
+    background: #2C335C;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  }
+  .foto svg, .foto img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+  }
+  .foto img { object-fit: cover; }
+  @media (max-width: 600px) { .foto { aspect-ratio: 4 / 3; } }
+
+  h1 {
+    font-family: "Bowlby One", "Arial Black", sans-serif;
+    font-weight: 400;
+    font-size: clamp(2.4rem, 9vw, 5.5rem);
+    line-height: 1.05;
+    color: var(--text);
+    margin: 56px 0 12px;
+    text-align: center;
+  }
+  .sub { text-align: center; font-size: 1.3rem; color: var(--muted); margin: 0 0 28px; }
+
+  button {
+    display: block;
+    margin: 0 auto;
+    font: inherit;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 12px 30px;
+    color: var(--bg);
+    background: var(--gold);
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  button:hover { background: #F0CB78; }
+  button:active { transform: scale(0.97); }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+
+  h2 {
+    font-family: "Bowlby One", "Arial Black", sans-serif;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    color: var(--gold);
+    margin: 72px 0 16px;
+  }
+  .bericht { max-width: 60ch; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 28px; }
+  .paneel { border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
+  .paneel h3 { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--muted); }
+  .groot { font-family: "Bowlby One", "Arial Black", sans-serif; font-size: 2.2rem; line-height: 1.2; margin: 4px 0 14px; }
+  .klein { margin: 12px 0 0; font-size: 0.95rem; color: var(--muted); }
+  .grafiek { display: block; width: 100%; height: auto; }
+
+  .galerij { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 20px; }
+  .galerij figure { position: relative; margin: 0; aspect-ratio: 4 / 3; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #2C335C; color: var(--muted); font-size: 0.95rem; }
+  .galerij figure::before { content: attr(data-naam); }
+  .galerij img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+  footer { margin-top: 72px; font-size: 1.3rem; }
+
+  #confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; }
+</style>
 </head>
-
-
 <body>
-
-    <div id="cursorGlow"></div>
-
-
-    <!-- =========================================================
-         NAVIGATION
-    ========================================================== -->
-
-    <nav>
-        <div class="nav-inner">
-
-            <a href="#home" class="logo">
-                mark<span>tool.nl</span>
-            </a>
-
-            <ul class="nav-links">
-                <li><a href="#about">Over mij</a></li>
-                <li><a href="#experience">Ervaring</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projecten</a></li>
-                <li><a href="#education">Opleiding</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-
-        </div>
-    </nav>
-
-
-    <main>
-
-        <!-- =====================================================
-             HERO
-        ====================================================== -->
-
-        <section id="home">
-
-            <div class="container">
-
-                <div class="hero">
-
-                    <div class="availability">
-                        <span class="status-dot"></span>
-                        Open voor interessante projecten
-                    </div>
-
-                    <h1>
-                        Mark<br>
-                        <span class="outline">Tool.</span>
-                    </h1>
-
-                    <p class="hero-description">
-                        <strong>Programmeur RPA</strong> met een passie
-                        voor technologie, ontwikkeling en oplossingsgericht denken.
-                    </p>
-
-                    <div class="hero-buttons">
-
-                        <a href="#projects" class="button primary">
-                            Bekijk mijn werk →
-                        </a>
-
-                        <a href="#contact" class="button">
-                            Neem contact op
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             ABOUT
-        ====================================================== -->
-
-        <section id="about">
-
-            <div class="container">
-
-                <div class="section-label">01 — Over mij</div>
-
-                <h2 class="section-title reveal">
-                    Nieuwsgierig.<br>
-                    Technisch. <span class="muted">Praktisch.</span>
-                </h2>
-
-                <div class="about-grid">
-
-                    <div class="about-text reveal">
-
-                        <p>
-                            Ik ben Mark Tool, programmeur RPA, expert in Excel en deskundig in AI.
-                        </p>
-
-                        <p>
-                            Mijn interesse ligt vooral bij projecten waarbij
-                            technologie niet het doel is, maar een middel om
-                            iets interessants, nuttigs of gewoon ontzettend
-                            gaaf te maken.
-                        </p>
-
-                        <p>
-                            Van webapplicaties en interactieve systemen tot
-                            fysieke prototypes en 3D-printing: ik vind het
-                            vooral leuk om een idee om te zetten in iets dat
-                            daadwerkelijk werkt.
-                        </p>
-
-                    </div>
-
-
-                    <div class="facts reveal">
-
-                        <div class="fact">
-                            <div class="fact-label">Locatie</div>
-                            <div class="fact-value">Nederland</div>
-                        </div>
-
-                        <div class="fact">
-                            <div class="fact-label">Studie</div>
-                            <div class="fact-value">Creative Technology - University of Twente</div>
-                        </div>
-
-                        <div class="fact">
-                            <div class="fact-label">Focus</div>
-                            <div class="fact-value">Oplossingen</div>
-                        </div>
-
-                        <div class="fact">
-                            <div class="fact-label">Rol</div>
-                            <div class="fact-value">Maker / Developer</div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             EXPERIENCE
-        ====================================================== -->
-
-        <section id="experience">
-
-            <div class="container">
-
-                <div class="section-label">02 — Ervaring</div>
-
-                <h2 class="section-title reveal">
-                    Wat ik heb<br>
-                    <span class="muted">gedaan.</span>
-                </h2>
-
-
-                <div class="timeline">
-
-                    <div class="timeline-item reveal">
-
-                        <div class="timeline-dot"></div>
-
-                        <div class="timeline-date">
-                            2019 — 2026
-                        </div>
-
-                        <h3 class="timeline-title">
-                            Creative Technology
-                        </h3>
-
-                        <div class="timeline-company">
-                            University of Twente
-                        </div>
-
-                        <p class="timeline-description">
-                            Werken aan interactieve technologie, software,
-                            hardware, UX en onderzoek. Met een sterke focus
-                            op het combineren van technische haalbaarheid
-                            met menselijke interactie.
-                        </p>
-
-                    </div>
-
-
-                    <div class="timeline-item reveal">
-
-                        <div class="timeline-dot"></div>
-
-                        <div class="timeline-date">
-                            2023 — 2024
-                        </div>
-
-                        <h3 class="timeline-title">
-                            Penningmeester
-                        </h3>
-
-                        <div class="timeline-company">
-                            Studievereniging Proto
-                        </div>
-
-                        <p class="timeline-description">
-                            Bestuurlijke ervaring binnen een studievereniging,
-                            waarbij ik verantwoordelijk was voor de financiën van een vereniging van 1000+ leden en een budget van ~€70.000. 
-                        </p>
-
-                    </div>
-
-
-                    <div class="timeline-item reveal">
-
-                        <div class="timeline-dot"></div>
-
-                        <div class="timeline-date">
-                            Doorlopend
-                        </div>
-
-                        <h3 class="timeline-title">
-                            Independent Maker
-                        </h3>
-
-                        <div class="timeline-company">
-                            Persoonlijke projecten
-                        </div>
-
-                        <p class="timeline-description">
-                            Een verzameling van eigen projecten op het gebied
-                            van webdevelopment, Raspberry Pi, automatisering,
-                            3D-printing, games en andere technische experimenten.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             SKILLS
-        ====================================================== -->
-
-        <section id="skills">
-
-            <div class="container">
-
-                <div class="section-label">03 — Skills</div>
-
-                <h2 class="section-title reveal">
-                    Mijn<br>
-                    <span class="muted">gereedschapskist.</span>
-                </h2>
-
-
-                <div class="skills-grid">
-
-                    <div class="skill reveal">
-
-                        <div class="skill-header">
-                            <span class="skill-name">RPA / Power Automate</span>
-                            <span class="skill-level">Expert</span>
-                        </div>
-
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 95%"></div>
-                        </div>
-
-                    </div>
-
-
-                    <div class="skill reveal">
-
-                        <div class="skill-header">
-                            <span class="skill-name">Microsoft Excel</span>
-                            <span class="skill-level">Expert</span>
-                        </div>
-
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 88%"></div>
-                        </div>
-
-                    </div>
-
-
-                    <div class="skill reveal">
-
-                        <div class="skill-header">
-                            <span class="skill-name">Artificial Intelligence</span>
-                            <span class="skill-level">Advanced</span>
-                        </div>
-
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 85%"></div>
-                        </div>
-
-                    </div>
-
-
-                    <div class="skill reveal">
-
-                        <div class="skill-header">
-                            <span class="skill-name">Web development</span>
-                            <span class="skill-level">Advanced</span>
-                        </div>
-
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 82%"></div>
-                        </div>
-
-                    </div>
-
-
-                    <div class="skill reveal">
-
-                        <div class="skill-header">
-                            <span class="skill-name">Physical building</span>
-                            <span class="skill-level">Advanced</span>
-                        </div>
-
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 80%"></div>
-                        </div>
-
-                    </div>
-
-
-                    <div class="skill reveal">
-
-                        <div class="skill-header">
-                            <span class="skill-name">3D Printing / CAD modelleren</span>
-                            <span class="skill-level">Advanced</span>
-                        </div>
-
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 78%"></div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             PROJECTS
-        ====================================================== -->
-
-        <section id="projects">
-
-            <div class="container">
-
-                <div class="section-label">04 — Projecten</div>
-
-                <h2 class="section-title reveal">
-                    Dingen die ik<br>
-                    <span class="muted">heb gebouwd.</span>
-                </h2>
-
-
-                <div class="projects">
-
-                    <article class="project reveal">
-
-                        <div>
-
-                            <div class="project-number">
-                                PROJECT / 001
-                            </div>
-
-                            <h3>
-                                Change Management Game
-                            </h3>
-
-                            <p>
-                                Mijn design thesis over een tabletop game-based workshop waarmee
-                                managers op een interactieve manier leren
-                                omgaan met change management.
-                            </p>
-
-                        </div>
-
-                        <div class="tags">
-                            <span class="tag">Game Design</span>
-                            <span class="tag">UX</span>
-                            <span class="tag">Research</span>
-                            <span class="tag">Education</span>
-                        </div>
-
-                    </article>
-
-
-                    <article class="project reveal">
-
-                        <div>
-
-                            <div class="project-number">
-                                PROJECT / 002
-                            </div>
-
-                            <h3>
-                                Poker Excel
-                            </h3>
-
-                            <p>
-                                Een speelbare variant van poker in Excel. Inclusief hand evaluatie en bots.
-                            </p>
-
-                        </div>
-
-                        <div class="tags">
-                            <span class="tag">Excel</span>
-                            <span class="tag">VBA programmeren</span>
-                            <span class="tag">Logica</span>
-                            <span class="tag">Statistiek</span>
-                        </div>
-
-                    </article>
-
-
-                    <article class="project reveal">
-
-                        <div>
-
-                            <div class="project-number">
-                                PROJECT / 003
-                            </div>
-
-                            <h3>
-                                Web Applications
-                            </h3>
-
-                            <p>
-                                Verschillende webapplicaties met databases,
-                                gebruikersinteractie en dynamische data.
-                            </p>
-
-                        </div>
-
-                        <div class="tags">
-                            <span class="tag">JavaScript</span>
-                            <span class="tag">PHP</span>
-                            <span class="tag">MySQL</span>
-                            <span class="tag">Node.js</span>
-                        </div>
-
-                    </article>
-
-
-                    <article class="project reveal">
-
-                        <div>
-
-                            <div class="project-number">
-                                PROJECT / 004
-                            </div>
-
-                            <h3>
-                                Maker Projects
-                            </h3>
-
-                            <p>
-                                Een verzameling fysieke prototypes,
-                                3D-geprinte onderdelen, Raspberry Pi projecten
-                                en andere technische experimenten.
-                            </p>
-
-                        </div>
-
-                        <div class="tags">
-                            <span class="tag">3D Printing</span>
-                            <span class="tag">Hardware</span>
-                            <span class="tag">Prototyping</span>
-                            <span class="tag">IoT</span>
-                        </div>
-
-                    </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             EDUCATION
-        ====================================================== -->
-
-        <section id="education">
-
-            <div class="container">
-
-                <div class="section-label">05 — Opleiding</div>
-
-                <h2 class="section-title reveal">
-                    Waar ik<br>
-                    <span class="muted">vandaan kom.</span>
-                </h2>
-
-
-                <div class="education-card reveal">
-
-                    <div class="education-year">
-                        2019 — 2026
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Creative Technology
-                        </h3>
-
-                        <h4>
-                            University of Twente
-                        </h4>
-
-                        <p>
-                            Een multidisciplinaire opleiding waarin technologie,
-                            design, programmeren, interactie en onderzoek
-                            samenkomen.
-                        </p>
-
-                    </div>
-
-                </div>
-
-                  <div class="education-card reveal">
-
-                    <div class="education-year">
-                        2012 — 2019
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            VWO NT/NG profiel
-                        </h3>
-
-                        <h4>
-                            Oscar Romero
-                        </h4>
-
-                        <p>
-                            Mijn VWO opleiding waarbij ik een gecombineerd NT en NG profiel heb gevolgd.
-                        </p>
-
-                    </div>
-
-                </div>
-
-                
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             INTERESTS
-        ====================================================== -->
-
-        <section>
-
-            <div class="container">
-
-                <div class="section-label">06 — Buiten werk</div>
-
-                <h2 class="section-title reveal">
-                    Dingen waar<br>
-                    ik <span class="muted">energie van krijg.</span>
-                </h2>
-
-
-                <div class="interests reveal">
-
-                    <span class="interest">💻 RPA</span>
-                    <span class="interest">💻 Development</span>
-                    <span class="interest">🛠️ Making</span>
-                    <span class="interest">🖨️ 3D Printing</span>
-                    <span class="interest">🤖 Home Automation</span>
-                    <span class="interest">🎧 DJing</span>
-                    <span class="interest">🎨 Artificial Intelligence</span>
-                    <span class="interest">🧠 Psychology</span>
-                    <span class="interest">🚀 New Technology</span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             CONTACT
-        ====================================================== -->
-
-        <section id="contact">
-
-            <div class="container">
-
-                <div class="contact-box reveal">
-
-                    <div class="section-label">
-                        07 — Contact
-                    </div>
-
-                    <h2>
-                        Let's build<br>
-                        something.
-                    </h2>
-
-                    <p>
-                        Heb je een interessant project, een goed idee,
-                        of wil je gewoon even kennismaken?
-                        Stuur me gerust een bericht.
-                    </p>
-
-
-                    <div class="contact-links">
-
-                        <!-- PAS DEZE AAN -->
-
-                        <a
-                            href="mailto:M@rktool.nl"
-                            class="button primary"
-                        >
-                            ✉️ M@rktool.nl
-                        </a>
-
-                        <a
-                            href="https://www.linkedin.com/in/mark-tool-365a291ab/"
-                            target="_blank"
-                            class="button"
-                        >
-                            LinkedIn ↗
-                        </a>
-
-                        <a
-                            href="https://github.com/"
-                            target="_blank"
-                            class="button"
-                        >
-                            GitHub ↗
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- =========================================================
-         FOOTER
-    ========================================================== -->
-
-    <footer>
-
-        <div class="container">
-
-            <div class="footer-inner">
-
-                <div>
-                    © 2026 Mark Tool
-                </div>
-
-                <div>
-                    Built with HTML, CSS & JavaScript.
-                </div>
-
-            </div>
-
-        </div>
-
-    </footer>
-
-
-    <!-- =========================================================
-         JAVASCRIPT
-    ========================================================== -->
-
-    <script>
-
-        /* -------------------------------------------------------
-           Cursor glow
-        ------------------------------------------------------- */
-
-        const cursorGlow = document.getElementById("cursorGlow");
-
-        document.addEventListener("mousemove", (event) => {
-
-            cursorGlow.style.left = event.clientX + "px";
-            cursorGlow.style.top = event.clientY + "px";
-
-        });
-
-
-        /* -------------------------------------------------------
-           Scroll reveal
-        ------------------------------------------------------- */
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-
-                entries.forEach((entry) => {
-
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("visible");
-                    }
-
-                });
-
-            },
-            {
-                threshold: 0.12
-            }
-        );
-
-
-        document.querySelectorAll(".reveal").forEach((element) => {
-            observer.observe(element);
-        });
-
-
-        /* -------------------------------------------------------
-           Active navigation
-        ------------------------------------------------------- */
-
-        const sections = document.querySelectorAll("section[id]");
-        const navLinks = document.querySelectorAll(".nav-links a");
-
-        window.addEventListener("scroll", () => {
-
-            let current = "";
-
-            sections.forEach((section) => {
-
-                const sectionTop = section.offsetTop - 150;
-
-                if (window.scrollY >= sectionTop) {
-                    current = section.getAttribute("id");
-                }
-
-            });
-
-            navLinks.forEach((link) => {
-
-                link.style.color = "";
-
-                if (link.getAttribute("href") === "#" + current) {
-                    link.style.color = "white";
-                }
-
-            });
-
-        });
-
-    </script>
-
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<main>
+  <!-- FOTO: upload jullie foto als "foto.jpg" naast dit bestand.
+       Zolang die er niet is, zie je de placeholder hieronder. -->
+  <figure class="foto">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Hier komt jullie foto">
+      <rect width="1600" height="900" fill="#2C335C"/>
+      <circle cx="560" cy="360" r="110" fill="#4A5385"/>
+      <path d="M360 800 C360 580 460 520 560 520 C660 520 760 580 760 800 Z" fill="#4A5385"/>
+      <circle cx="1020" cy="330" r="130" fill="#6B74A6"/>
+      <path d="M780 800 C780 560 900 490 1020 490 C1140 490 1260 560 1260 800 Z" fill="#6B74A6"/>
+      <text x="800" y="870" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="700" font-size="44" fill="#A9AEC6">Hier komt jullie foto (foto.jpg)</text>
+    </svg>
+    <img src="foto.jpg" alt="Foto van ons tweeën" onerror="this.remove()">
+  </figure>
+
+  <h1>Gefeliciteerd, Papa!</h1>
+  <p class="sub">Een kleine website, speciaal voor jou.</p>
+  <button id="knop" type="button">Gooi confetti!</button>
+
+  <!-- PAS AAN: schrijf hier je eigen berichtje -->
+  <h2>Een berichtje voor jou</h2>
+  <p class="bericht">Vandaag draait alles om jou. Bedankt voor alle goede raad, de slechte grappen en de keren dat je er gewoon was. Ik hoop dat je vandaag een geweldige dag hebt, met taart, familie en veel gezelligheid.</p>
+
+  <h2>Mooie momenten</h2>
+  <!-- FOTO'S: upload foto2.jpg, foto3.jpg en foto4.jpg naast dit bestand.
+       Zolang ze er niet staan, zie je een leeg vlak met de bestandsnaam. -->
+  <div class="galerij">
+    <figure data-naam="foto2.jpg"><img src="foto2.jpg" alt="Een mooi moment samen" onerror="this.remove()"></figure>
+    <figure data-naam="foto3.jpg"><img src="foto3.jpg" alt="Nog een mooi moment samen" onerror="this.remove()"></figure>
+    <figure data-naam="foto4.jpg"><img src="foto4.jpg" alt="Weer een mooi moment samen" onerror="this.remove()"></figure>
+  </div>
+
+  <section>
+    <h2>Dit zijn dingen die je hier zou kunnen hosten</h2>
+    <p class="bericht">Een voorbeeld van wat deze pagina ook kan laten zien: je digitale gasmeter en je thuisbatterij. Alle cijfers hieronder zijn verzonnen voorbeeldgegevens.</p>
+    <p class="klein" id="bijgewerkt"></p>
+    <div class="grid">
+      <article class="paneel">
+        <h3>Gasverbruik, laatste 14 dagen</h3>
+        <p class="groot" id="gas-totaal"></p>
+        <div id="gas-grafiek"></div>
+        <p class="klein">Verbruik in m³ per dag. Meterstand: 4.218 m³ (voorbeeld)</p>
+      </article>
+      <article class="paneel">
+        <h3>Stroomverbruik, laatste 7 dagen</h3>
+        <p class="groot" id="stroom-totaal"></p>
+        <div id="stroom-grafiek"></div>
+        <p class="klein">Verbruik in kWh per dag</p>
+      </article>
+      <article class="paneel">
+        <h3>Zonnepanelen, vandaag</h3>
+        <p class="groot" id="zon-totaal"></p>
+        <div id="zon-grafiek"></div>
+        <p class="klein">Opbrengst in kWh per uur</p>
+      </article>
+      <article class="paneel">
+        <h3>Thuisbatterij, vandaag</h3>
+        <p class="groot" id="accu-nu"></p>
+        <div id="accu-grafiek"></div>
+        <p class="klein">Laadniveau in procenten per uur</p>
+      </article>
+    </div>
+  </section>
+
+  <footer>
+    <!-- PAS AAN: vul je eigen naam in -->
+    Met veel liefs, jouw zoon/dochter
+  </footer>
+</main>
+
+<script>
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  const kleuren = ['#FFD23F', '#FF6FA5', '#5CE1C2', '#FFFDF7'];
+  const rustig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let stukjes = [];
+  let bezig = false;
+
+  function formaat() { canvas.width = innerWidth; canvas.height = innerHeight; }
+  addEventListener('resize', formaat);
+  formaat();
+
+  function tik() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stukjes.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.fillStyle = p.kleur;
+      ctx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2);
+      ctx.restore();
+    });
+    stukjes = stukjes.filter(p => p.y < canvas.height + 30);
+    if (stukjes.length) requestAnimationFrame(tik);
+    else { bezig = false; ctx.clearRect(0, 0, canvas.width, canvas.height); }
+  }
+
+  function confetti() {
+    if (rustig) return;
+    for (let i = 0; i < 160; i++) {
+      stukjes.push({
+        x: Math.random() * canvas.width,
+        y: -20 - Math.random() * canvas.height * 0.4,
+        vx: (Math.random() - 0.5) * 4,
+        vy: 2 + Math.random() * 4,
+        s: 8 + Math.random() * 10,
+        rot: Math.random() * 6,
+        vr: (Math.random() - 0.5) * 0.3,
+        kleur: kleuren[Math.floor(Math.random() * kleuren.length)]
+      });
+    }
+    if (!bezig) { bezig = true; requestAnimationFrame(tik); }
+  }
+
+  document.getElementById('knop').addEventListener('click', confetti);
+  addEventListener('load', () => setTimeout(confetti, 400));
+  /* Voorbeeldgegevens: vervang deze lijsten later door echte metingen */
+  const gas    = [3.1, 2.4, 4.2, 5.0, 4.6, 3.8, 2.9, 3.3, 4.8, 5.4, 4.1, 3.5, 2.7, 3.9]; // m³ per dag, 14 dagen
+  const stroom = [9.8, 8.6, 10.4, 11.2, 9.1, 7.9, 8.8];                                  // kWh per dag, 7 dagen
+  const zon    = [0, 0, 0, 0, 0, 0, 0, 0.1, 0.4, 0.9, 1.5, 2.1, 2.4, 2.3, 1.9, 1.3, 0.7, 0.2, 0, 0, 0, 0, 0, 0]; // kWh per uur
+  const accu   = [35, 30, 26, 22, 18, 15, 14, 16, 24, 38, 55, 72, 88, 96, 100, 98, 92, 84, 72, 60, 52, 45, 40, 36]; // % per uur
+
+  const W = 400, H = 200, L = 34, R = 8, T = 10, B = 26;
+  const hoogte = H - T - B;
+  const som = lijst => lijst.reduce((a, b) => a + b, 0);
+  const nl = (getal, dec = 1) => getal.toFixed(dec).replace('.', ',');
+  const dagnaam = n => {
+    const d = new Date(); d.setDate(d.getDate() - n);
+    return d.toLocaleDateString('nl-NL', { weekday: 'short' });
+  };
+  const xtekst = (x, t) => `<text x="${x}" y="${H - 8}" text-anchor="middle" font-size="11" fill="#A9AEC6">${t}</text>`;
+  const raster = (max, stap, fmt) => {
+    let uit = '';
+    for (let v = 0; v <= max; v += stap) {
+      const y = T + hoogte * (1 - v / max);
+      uit += `<line x1="${L}" x2="${W - R}" y1="${y}" y2="${y}" stroke="rgba(243,238,227,.18)"/>` +
+             `<text x="${L - 6}" y="${y + 4}" text-anchor="end" font-size="11" fill="#A9AEC6">${fmt(v)}</text>`;
+    }
+    return uit;
+  };
+  const toon = (id, inhoud, label) => {
+    document.getElementById(id).innerHTML =
+      `<svg class="grafiek" viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}">${inhoud}</svg>`;
+  };
+
+  function staaf(id, data, max, stap, label, xlabel) {
+    const bw = (W - L - R) / data.length;
+    let uit = raster(max, stap, v => v);
+    data.forEach((v, i) => {
+      const x = L + i * bw + bw * 0.18, h = hoogte * v / max;
+      uit += `<rect x="${x}" y="${T + hoogte - h}" width="${bw * 0.64}" height="${h}" rx="3" fill="#E3B95A"/>`;
+      const t = xlabel(i);
+      if (t) uit += xtekst(x + bw * 0.32, t);
+    });
+    toon(id, uit, label);
+  }
+
+  function lijn(id, data, max, stap, label, fmt) {
+    const px = i => L + i * (W - L - R) / (data.length - 1);
+    const py = v => T + hoogte * (1 - v / max);
+    const pad = data.map((v, i) => `${i ? 'L' : 'M'}${px(i)},${py(v)}`).join(' ');
+    let uit = raster(max, stap, fmt) +
+      `<path d="${pad} L${px(data.length - 1)},${T + hoogte} L${px(0)},${T + hoogte} Z" fill="#E3B95A" opacity=".18"/>` +
+      `<path d="${pad}" fill="none" stroke="#E3B95A" stroke-width="2.5" stroke-linejoin="round"/>`;
+    [0, 6, 12, 18].forEach(u => { uit += xtekst(px(u), String(u).padStart(2, '0') + ':00'); });
+    toon(id, uit, label);
+  }
+
+  staaf('gas-grafiek', gas, 6, 2, 'Staafdiagram van het gasverbruik per dag in kubieke meter',
+        i => (gas.length - 1 - i) % 2 === 0 ? dagnaam(gas.length - 1 - i) : '');
+  staaf('stroom-grafiek', stroom, 12, 4, 'Staafdiagram van het stroomverbruik per dag in kilowattuur',
+        i => dagnaam(stroom.length - 1 - i));
+  lijn('zon-grafiek', zon, 3, 1, 'Lijndiagram van de opbrengst van de zonnepanelen per uur', v => v);
+  lijn('accu-grafiek', accu, 100, 50, 'Lijndiagram van het laadniveau van de thuisbatterij per uur', v => v + '%');
+
+  document.getElementById('gas-totaal').textContent = nl(som(gas)) + ' m³';
+  document.getElementById('stroom-totaal').textContent = nl(som(stroom)) + ' kWh';
+  document.getElementById('zon-totaal').textContent = nl(som(zon)) + ' kWh';
+  document.getElementById('accu-nu').textContent = accu[accu.length - 1] + '%';
+  document.getElementById('bijgewerkt').textContent = 'Voorbeeld, laatst bijgewerkt op ' +
+    new Date().toLocaleString('nl-NL', { dateStyle: 'long', timeStyle: 'short' });
+</script>
 </body>
 </html>
-```
